@@ -4,9 +4,9 @@ app = Flask(__name__)
 
 # Sample data
 transactions = [
-    {'id': 1, 'date': '2023-03-22', 'amount': 1000},
-    {'id': 2, 'date': '2023-05-12', 'amount': -200},
-    {'id': 3, 'date': '2023-06-03', 'amount': 350}
+    {'id': 1, 'date': '2023-03-22', 'amount': 1000, 'note' : "None"},
+    {'id': 2, 'date': '2023-05-12', 'amount': -200, 'note': "None"},
+    {'id': 3, 'date': '2023-06-03', 'amount': 350, 'note':"None"}
 ]
 filtered_transactions = []
 
@@ -32,7 +32,8 @@ def add_transaction():
         transaction = {
             'id': len(transactions) + 1,
             'date': request.form['date'],
-            'amount': float(request.form['amount'])
+            'amount': float(request.form['amount']),
+            'note': request.form['note']
         }
         transactions.append(transaction)
         return redirect(url_for("get_transactions"))
@@ -45,11 +46,13 @@ def edit_transaction(transaction_id):
     if request.method == 'POST':
         date = request.form['date']
         amount = float(request.form['amount'])
+        note = request.form['note']
 
         for transaction in transactions:
             if transaction['id'] == transaction_id:
                 transaction['date'] = date
                 transaction['amount'] = amount
+                transaction['note'] = note
                 break
         return redirect(url_for("get_transactions"))
     for transaction in transactions:
